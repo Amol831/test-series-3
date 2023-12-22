@@ -1,0 +1,136 @@
+As per given data we have different following tables:
+
+1.	Books
+2.	Customers
+3.	Orders
+4.	OrderDetails
+
+We will now make the Database Schema design as follows:
+
+1.Books:
+Book_id 
+Title
+Author
+IBSN
+Genre
+Price
+Quantity_in_stock
+
+
+2.Customers:
+Customer_id 
+Name
+Email
+Phone_number
+Shipping_address
+
+
+3.Orders:
+Order_id 
+Customer_id (Foreign Key referencing Customers)
+Order_date
+Total_amount
+
+4.OrderDetails:
+Order_detail_id 
+Order_id (Foreign Key referencing Orders)
+Book_id (Foreign Key referencing Books)
+Quantity
+Subtotal
+
+We will now create a new Database by the name ONLINE_BOOKSTORE:
+
+CREATE DATABASE ONLINE_BOOKSTORE;
+use ONLINE_BOOKSTORE;
+
+
+
+we will now write queries to make different tables, insert values into it and then retrieve it:
+
+
+Books table query:
+
+create table Books (Title varchar(40), Author varchar(40), ISBN  int, Genre varchar(20), Price int, Quantity_in_stock int);
+
+
+insert into books values ('Nehru', 'Shubhra Gupta', 100, 'Autobiography', 565,45);
+
+insert into Books values ( 'The World: A Family History', 'Tamal Bandyopadhyay',01, 'Adventure', 712, 85);
+
+insert into Books values ( 'Human Anatomy', 'Dr Ashvini Kumar', 102, 'Adventure', 310, 188);
+
+insert into Books  values ( 'Spare', 'Dr Ashvini Kumar', 103, 'Thriller', 489, 0);
+	
+select * from Books;
+
+
+
+Customers table query:
+
+create table Customers (Customer_ID varchar(20), Name_of_Customer varchar(40), Email varchar(40), Phone_number bigint, Shipping_address varchar(50));
+
+
+insert into Customers  values ('OB01', 'Mansi Shah', 'mansi123@gmail.com', 9874563245, '7/41 mumbai');
+
+insert into Customers values ( 'OB02', 'Basant Chouhan', 'Basant@yahoo.com', 9874563248, '45/41 Dubai');
+
+insert into Customers values ( 'OB03', 'Stella Evans', 'Stella@rediff.com', 9874563275, '45/41 Newyork');
+
+insert into Customers  values ( 'OB03', 'Stella Evans', 'Stella@rediff.com', 9874563225, '45/41 Faridabad');
+	
+select * from Customers;
+
+
+Orders table query:
+
+create table Orders (Order_id int, Customer_id varchar(20), Order_date DATE,
+    Total_amount int, foreign key (Customer_id) references Customers(Customer_id));
+
+insert into Orders values (01, 'OB01', 12/08/2023, 640);
+
+insert into Orders values (02, 'OB02', 26/010/2023,780);
+
+insert into Orders values (03, 'OB03', 18/12/2023, 499);
+
+insert into Orders values (04, 'OB04', 02/11/2023, 941);
+
+select * from Orders;
+
+
+
+
+Order_details table query:
+
+create table Order_details (Order_detail_id varchar(20), Order_id int, Book_id varchar(20), Quantity int, Subtotal int, foreign key (order_id) references Orders(Order_id), foreign key (book_id) references Books(Book_id) );
+
+
+insert into Order_details values (OD01, 1, ‘B01’, 2);
+
+insert into Order_details values (OD02, 2, ‘B02’, 4);
+
+insert into Order_details values (OD03, 3, ‘B03’, 1);
+
+insert into Order_details values (OD04, 3, ‘B03’, 7);
+
+
+select * from Order_details;
+
+
+We will now Customer information, like customer phone number for a specific customer whose customer id is 'OB02'
+
+Update Customers set Phone_number = 9000000008 where Customer_id = 'OB02';
+
+
+
+We will now delete the book which is not available in stock:
+
+delete from Books where Quantity_in_stock = 0;
+
+
+
+We will now calculate the total revenue generated from the orders:
+
+Select
+sum(Total_amount) as Total_revenue
+from Orders;
+
